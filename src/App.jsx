@@ -10,6 +10,8 @@ import Footer from './components/footer/footer';
 import Inicio from './Screens/Inicio';
 import Musicos from './Screens/Musicos';
 import Oportunidades from './Screens/Oportunidades';
+import Prueba from './Screens/prueba';
+import Prueba2 from './Screens/Prueba2';
 import Precios from './Screens/Precios';
 import InicioSesion from './Screens/InicioSesion';
 import Registrarse from './Screens/Registrarse';
@@ -33,6 +35,8 @@ function App() {
             <Route path='/' element={<div> <Navbar/> <Inicio/> <Body/> <Footer/></div>}/>
             <Route path='/Musicos' element={<div> <Navbar/> <Musicos/> <Body/> <Footer/> </div>}/>
             <Route path='/Oportunidades' element={<div> <Navbar/> <Oportunidades/> <Body/> <Footer/> </div>}/>
+            <Route path='/Prueba' element={<div> <Prueba/>  </div>}/>
+            <Route path='/Prueba2' element={<div> <Prueba2/>  </div>}/>
             <Route path='/Precios' element={<div> <Navbar/> <Precios/> <Body/>  <Footer/> </div>}/>
             <Route path='/InicioSesion' element={<InicioSesion/>}/>
             <Route path='/Registrarse' element={<Registrarse/>}/>
