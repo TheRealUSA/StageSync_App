@@ -47,7 +47,7 @@ const RecuperarContraseñaClick = () => {
                         <input type='checkbox' id='remember'></input>
                         <label className='ml-2 font-medium text-base text-gray-300' for="remember">Recordar por 30 días</label>
                     </div>
-                    <button className='font-mediun text-base' onClick={RecuperarContraseñaClick}>Recuperar contraseña</button>
+                    <button className='font-mediun text-base text-white' onClick={RecuperarContraseñaClick}>Recuperar contraseña</button>
                 </div>
                 <div className='mt-8 flex flex-col gap-y-4'>
                     <button className='active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] 

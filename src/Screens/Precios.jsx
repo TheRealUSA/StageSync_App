@@ -38,8 +38,8 @@ const Precios = () => {
                         <p className="text-zinc-900 p-5 text-left">Incluye:</p>
                         <p className="text-zinc-900 p-5 text-left">Prioridad en la lista de musicos</p>
                         <p className="text-zinc-900 p-5 text-left mb-20">Prioridad en las oportunidades laborales</p>
-                        <button className="bg-[#D1C6AE] hover:bg-zinc-100 text-black font-bold py-2 px-4 mt-6 rounded-sm">
-                            Obetener Plan
+                        <button className="bg-[#000000] text-white hover:bg-zinc-800 text-black font-bold py-2 px-4 mt-6 rounded-sm">
+                            Obtener Plan
                         </button>
                     </div>
                     <div className="bg-[#D1C6AE] rounded-lg p-9 text-center">
@@ -49,8 +49,8 @@ const Precios = () => {
                         <p className="text-zinc-900 p-5 text-left">Ahorra un 16%</p>
                         <p className="text-zinc-900 p-5 p-5 text-left">Prioridad en la lista de musicos</p>
                         <p className="text-zinc-900 p-5 p-5 text-left">Prioridad en las oportunidades laborales</p>
-                        <button className="bg-[#D1C6AE] hover:bg-zinc-100 text-black font-bold py-2 px-4 mt-6 rounded-sm">
-                            Obetener Plan
+                        <button className="bg-[#000000] text-white hover:bg-zinc-800 text-black font-bold py-2 px-4 mt-6 rounded-sm">
+                            Obtener Plan
                         </button>
                     </div>
                 </div>

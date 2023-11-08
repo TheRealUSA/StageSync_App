@@ -87,12 +87,12 @@ const VerMusico = () => {
         </div>
       </div>
       <div className="mt-10 ">
-          <button onClick={BackClick}
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 ml-3"
-          >
-            Volver
-          </button>
-        </div>
+        <button onClick={BackClick}
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 ml-3"
+        >
+          Volver
+        </button>
+      </div>
     </div>
   );
 };
