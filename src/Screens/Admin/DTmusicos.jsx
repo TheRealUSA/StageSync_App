@@ -45,7 +45,7 @@ const DataTable = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-semibold mb-4">Tabla de Datos</h1>
+      <h1 className="text-2xl font-semibold mb-4">Tabla de Musicos</h1>
       <div className="mb-4 flex items-center">
       <button
           className="ml-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={AgregarClick}

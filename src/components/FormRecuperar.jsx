@@ -36,7 +36,7 @@ export default function FormRecuperar() {
                 </div>
                 <div className='mt-8 flex flex-col gap-y-4'>
                     <button className='active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out py-3 rounded-xl bg-[#D1C6AE] text-black text-center text-lg font-bold'>Recuperar contraseña</button>
-                    <button className="flex items-center justify-center" onClick={BackClick}>
+                    <button className="flex items-center justify-center text-white" onClick={BackClick}>
                     Volver
                 </button>
                 </div>

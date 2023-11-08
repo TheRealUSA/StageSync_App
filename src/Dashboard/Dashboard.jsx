@@ -46,7 +46,7 @@ function Dashboard() {
             <li>
               <a
                 href="/Dashboard"
-                className="flex items-center gap-4 hover:bg-[#D1C6AE] transition-colors py-2 px-4 rounded-lg"
+                className="flex items-center gap-4 hover:bg-[#D1C6AE] text-white transition-colors py-2 px-4 rounded-lg"
               >
                 <RiHome6Line /> Dashboard
               </a>
@@ -54,7 +54,7 @@ function Dashboard() {
             <li>
               <a
                 href="/Dashboard/Usuarios"
-                className="flex items-center gap-4 hover:bg-[#D1C6AE] transition-colors py-2 px-4 rounded-lg"
+                className="flex items-center gap-4 hover:bg-[#D1C6AE] text-white transition-colors py-2 px-4 rounded-lg"
               >
                 <RiUser3Line /> Usuarios
               </a>
@@ -62,7 +62,7 @@ function Dashboard() {
             <li>
               <a
                 href="/Dashboard/Musico"
-                className="flex items-center gap-4 hover:bg-[#D1C6AE] transition-colors py-2 px-4 rounded-lg"
+                className="flex items-center gap-4 hover:bg-[#D1C6AE] text-white transition-colors py-2 px-4 rounded-lg"
               >
                 <RiMusic2Line /> Musicos
               </a>
@@ -70,31 +70,12 @@ function Dashboard() {
             <li>
               <a
                 href="/Dashboard/Contratantes"
-                className="flex items-center gap-4 hover:bg-[#D1C6AE] transition-colors py-2 px-4 rounded-lg"
+                className="flex items-center gap-4 hover:bg-[#D1C6AE] text-white transition-colors py-2 px-4 rounded-lg"
               >
                 <RiMoneyDollarCircleLine /> Contratantes
               </a>
             </li>
-            <li>
-              <a
-                href="/#"
-                className="flex items-center gap-4 hover:bg-[#D1C6AE] transition-colors py-2 px-4 rounded-lg"
-              >
-                <RiQuestionMark /> No se que más poner
-              </a>
-            </li>
           </ul>
-        </div>
-        <div className="flex items-center gap-4">
-          <img
-            src="./Img/Gerald.jpg"
-            alt="Foto de usuario"
-            className="w-8 h-8 object-cover rounded-full ring-4 ring-white"
-          />
-          <div>
-            <h5 className="font-medium text-[#D1C6AE]">Gerald Gonzalez Valdes</h5>
-            <p className="text-[#D1C6AE] text-sm">Ing. Sistema</p>
-          </div>
         </div>
       </div>
       {/* Btn menu movil */}
@@ -119,11 +100,7 @@ function Dashboard() {
         <nav className="flex items-center gap-2 text-lg">
           <Menu as="div">
             <Menu.Button className="flex items-center gap-4 hover:bg-[#700E11] py-2 px-4 rounded-lg transition-colors relative">
-              <img
-                src="./Img/Gerald.jpg"
-                alt="Foto de usuario"
-                className="w-6 h-6 object-cover rounded-full"
-              />
+          
               <span className="text-white">Gerald Gonzalez Valdes</span>
               <RiArrowDownSLine className="text-white" />
             </Menu.Button>
@@ -145,11 +122,6 @@ function Dashboard() {
                       href="/#"
                       className="flex items-center gap-4 p-2 rounded-lg hover:bg-[#D1C6AE] transition-colors"
                     >
-                      <img
-                        src="./Img/Gerald.jpg"
-                        alt="Foto de usuario"
-                        className="w-8 h-8 object-cover rounded-full"
-                      />
                       <div>
                         <h5 className="text-base text-white">Gerald Gonzalez Valdes</h5>
                         <p className="text-white text-xs">
@@ -162,7 +134,7 @@ function Dashboard() {
                   <Menu.Item>
                     <a
                       href="/InicioSesion"
-                      className="flex items-center gap-4 p-2 rounded-lg hover:bg-[#D1C6AE] transition-colors text-base"
+                      className="flex items-center gap-4 p-2 rounded-lg hover:bg-[#D1C6AE] text-white transition-colors text-base"
                     >
                       <RiLogoutCircleRLine /> Cerrar sesion
                     </a>
