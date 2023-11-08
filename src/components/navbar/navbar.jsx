@@ -15,7 +15,7 @@ const links = [
   },
   {
     link: '/Oportunidades',
-    text: 'Oportunidades',
+    text: 'Eventos',
     id: 3,
   },
   {

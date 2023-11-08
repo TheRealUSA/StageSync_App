@@ -1,27 +1,27 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import MyCarousel from '../components/Carousel/Carousel';
 
 function Inicio() {
 
   const navigate = useNavigate();
-    const ExplorarClick = () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      navigate('/Oportunidades');
+  const ExplorarClick = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigate('/Oportunidades');
   };
 
   const RegisterClick = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     navigate('/Registrarse');
-};
+  };
 
   return (
     <>
-<div className="bg-cover bg-center min-h-screen z-1 relative" style={{
-  backgroundImage: 'url("/Img/inicioFoto.jpg")',
-}}>
-        <div className="bg-[#700E11] h-16 z-1"></div>
-        <div className="flex flex-col justify-center items-center mt-20 text-white text-center">
-          <h1 className="text-3xl sm:text-5xl mb-5 font-bold tracking-widest">
+   <div className=" min-h-screen bg-[#700E11]">
+      <MyCarousel />
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="text-white text-center">
+        <h1 className="text-3xl sm:text-5xl mb-5 font-bold tracking-widest">
             ¡Afinemos tus Oportunidades!
           </h1>
           <h1 className='text-3xl sm:text-5xl mb-5 sm:mb-20 font-normal tracking-widest'>
@@ -38,6 +38,7 @@ function Inicio() {
           </button>
         </div>
       </div>
+    </div>
       <div className="bg-[#D1C6AE] text-center p-2 sm:p-5">
         <h1 className="text-4xl font-semibold text-black mt-10 mb-10">
           Descubre un Mundo de Oportunidades Musicales
