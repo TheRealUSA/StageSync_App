@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { createRecruitment, updateRecruitment, deleteRecruitment, getAllRecruitments, getRecruitmentById } from '../Services/recruitments';
+import { createRecruitment, updateRecruitment, deleteRecruitment, getAllRecruitments, getRecruitmentById } from '../../Services/recruitments';
 
-const Prueba2 = () => {
+const DataTablereclutamiento = () => {
   const [formData, setFormData] = useState({
     id: null,
     date_hire: '',
@@ -227,9 +227,9 @@ const Prueba2 = () => {
         <tbody>
           {recruitments.map((recruitment) => (
             <tr key={recruitment.id}>
-              <td className="border border-gray-300 py-2 px-4">{recruitment.date_hire}</td>
-              <td className="border border-gray-300 py-2 px-4">{recruitment.event_location}</td>
-              <td className="border border-gray-300 py-2 px-4">
+              <td className="border border-gray-300 py-2 px-4 text-center">{recruitment.date_hire}</td>
+              <td className="border border-gray-300 py-2 px-4 text-center">{recruitment.event_location}</td>
+              <td className="border border-gray-300 py-2 px-4 text-center">
                 <button
                   onClick={() => handleEditRecruitment(recruitment)}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded ml-1"
@@ -257,4 +257,4 @@ const Prueba2 = () => {
   );
 };
 
-export default Prueba2;
+export default DataTablereclutamiento;
