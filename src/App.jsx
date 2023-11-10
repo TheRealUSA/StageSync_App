@@ -59,7 +59,10 @@ function App() {
               <Route path='AgregarMusico' element={<AgregarMusico/>} />
               <Route path='VerMusico' element={<VerMusico/>} />
               <Route path='EditarMusico' element={<EditarMusico/>} />
-              <Route path='DTreclutamiento' element={<DTreclutamiento/>} />
+              <Route path='DataTableReview' element={<DataTableReview/>} />
+              <Route path='DataTableReclutamiento' element={<DTreclutamiento/>} />
+              <Route path='DataTableCategoryBusiness' element={<DataTableCategoryBusiness/>} />
+              <Route path='DataTableProfileBusiness' element={<DataTableProfileBusiness/>} />
             </Route>
             <Route path='*' element={<Error404/>}/>
           </Routes>

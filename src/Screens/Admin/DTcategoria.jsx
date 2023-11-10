@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import ReactPaginate from 'react-paginate';
 import { createCategoryBusiness, updateCategoryBusiness, deleteCategoryBusiness, getAllCategoryBusinesses, getCategoryBusinessById } from '../../Services/categorybusines';
+import { AiFillEdit, AiFillDelete, AiFillEye } from 'react-icons/ai';
 
 const DataTableCategoryBusiness = () => {
   const [formData, setFormData] = useState({
@@ -38,11 +40,12 @@ const DataTableCategoryBusiness = () => {
 
   const handleUpdateCategoryBusines = async () => {
     try {
-      const updatedCategoryBusines = await updateCategoryBusiness(formData.id, formData);
+      const { id, ...updateData } = formData;  // Elimina el campo 'id'
+      const updatedCategoryBusines = await updateCategoryBusiness(formData.id, updateData);
       fetchCategoryBusiness();
       clearForm();
     } catch (error) {
-      console.error('Error al actualizar la categoria de negocio', error);
+      console.error('Error al actualizar la categoria de negocio', error.response.data);
     }
   };
 
@@ -62,6 +65,7 @@ const DataTableCategoryBusiness = () => {
       setFormData({ ...selected });
       setSelectedCategoryBusiness(selected);
       setCreating(false);
+      setContainerVisible(true);
     } catch (error) {
       console.error('Error al obtener los detalles de la categoria de negocio', error);
     }
@@ -72,6 +76,7 @@ const DataTableCategoryBusiness = () => {
       const selected = await getCategoryBusinessById(categoryBusiness.id);
       setFormData({ ...selected });
       setSelectedCategoryBusiness(selected);
+      setContainerVisible(true);
     } catch (error) {
       console.error('Error al obtener los detalles del reclutamiento', error);
     }
@@ -83,13 +88,39 @@ const DataTableCategoryBusiness = () => {
       name: '',
     });
     setCreating(true);
-    setSelectedCategoryBusines(null);
+    setSelectedCategoryBusiness(null);
   };
+
+
+  const [containerVisible, setContainerVisible] = useState(false);
+
+  const [filter, setFilter] = useState('');
+
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value);
+  };
+
+  const filteredCategoryBusiness = categoryBusiness.filter(categoryBusines =>
+    categoryBusines.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  const itemsPerPage = 5; // Puedes ajustar esto según tus necesidades
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const handlePageChange = (selectedPage) => {
+    setCurrentPage(selectedPage.selected);
+  };
+
+  const indexOfLastItem = (currentPage + 1) * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredCategoryBusiness.slice(indexOfFirstItem, indexOfLastItem);
+
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl text-center">{creating ? 'Crear Categoria de negocio' : 'Actualizar Categoria de negocio'}</h2>
       <form>
+      <div className={`mt-4 ${containerVisible ? '' : 'hidden'}`}>
+      <h2 className="text-2xl text-center">{creating ? 'Crear Categoría de negocio' : 'Actualizar Categoría de negocio'}</h2>
         <div className="mt-4 p-4 bg-white shadow-md rounded-md grid grid-cols-2 gap-4">
           <div className="mb-4">
             <label htmlFor="name" className="block font-medium text-gray-700">Nombre</label>
@@ -101,15 +132,14 @@ const DataTableCategoryBusiness = () => {
               className="w-full p-2 border rounded"
             />
           </div>
-        </div>
-        <div className="mt-4">
+          <div className="mt-4">
           {creating ? (
             <button
               type="button"
               onClick={handleCreateCategoryBusines}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             >
-              Crear Reclutamiento
+              Crear
             </button>
           ) : (
             <button
@@ -117,7 +147,7 @@ const DataTableCategoryBusiness = () => {
               onClick={handleUpdateCategoryBusines}
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             >
-              Actualizar Reclutamiento
+              Actualizar
             </button>
           )}
           <button
@@ -128,44 +158,81 @@ const DataTableCategoryBusiness = () => {
             Limpiar
           </button>
         </div>
+        </div>
+        </div>
       </form>
   
-      <h2 className="text-2xl text-center mt-4 mb-4">Reclutamientos</h2>
-      <table className="w-full border-collapse border border-gray-300">
+      <h2 className="text-2xl text-center mt-4 mb-4">Categoría de negocios</h2>
+      <div className="mt-4 flex justify-between items-center mb-2">
+        <button
+          type="button"
+          onClick={() => setContainerVisible(!containerVisible)}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          {containerVisible ? 'Ocultar' : 'Agregar categoría'}
+        </button>
+
+        <input
+          type="text"
+          value={filter}
+          onChange={handleFilterChange}
+          placeholder="Filtrar por nombre"
+          className="w-48 p-2 border rounded"
+        />
+      </div>
+      <table className="w-full border-collapse border border-gray-300 shadow-md rounded-md">
         <thead>
           <tr className="bg-[#D1C6AE]">
-            <th className="border border-gray-300 py-2 px-4">Nombre</th>
-            <th className="border border-gray-300 py-2 px-4">Acciones</th>
+          <th className="border border-gray-300 py-2 px-4 text-sm font-semibold uppercase">ID</th>
+            <th className="border border-gray-300 py-2 px-4 text-sm font-semibold uppercase">Nombre</th>
+            <th className="border border-gray-300 py-2 px-4 text-sm font-semibold uppercase">Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {categoryBusiness.map((categoryBusines) => (
+          {currentItems.map((categoryBusines, index) => (
             <tr key={categoryBusines.id}>
+              <td className="border border-gray-300 py-2 px-4 text-center">{index + 1}</td>
               <td className="border border-gray-300 py-2 px-4 text-center">{categoryBusines.name}</td>
               <td className="border border-gray-300 py-2 px-4 text-center">
                 <button
                   onClick={() => handleEditCategoryBusines(categoryBusines)}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded ml-1"
                 >
-                  Editar
+                  <AiFillEdit />
                 </button>
                 <button
                   onClick={() => handleDeleteCategoryBusines(categoryBusines.id)}
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded ml-1"
                 >
-                  Eliminar
+                  <AiFillDelete />
                 </button>
                 <button
                   onClick={() => handleShowDetails(categoryBusines)}
                   className="bg-gray-500 hover-bg-gray-700 text-white font-bold py-1 px-2 rounded ml-1"
                 >
-                  Mostrar Detalles
+                  <AiFillEye />
                 </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <ReactPaginate
+        previousLabel={'Anterior'}
+        nextLabel={'Siguiente'}
+        breakLabel={'...'}
+        pageCount={Math.ceil(filteredCategoryBusiness.length / itemsPerPage)}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={handlePageChange}
+        containerClassName={'flex justify-center mt-4 space-x-2'}
+        subContainerClassName={'flex items-center'}
+        activeClassName={'bg-blue-500 text-white px-3 py-2 rounded-full'}
+        pageClassName={'px-3 py-2 rounded-full bg-gray-200 text-gray-700'}
+        previousClassName={'px-3 py-2 rounded-full bg-gray-200 text-gray-700'}
+        nextClassName={'px-3 py-2 rounded-full bg-gray-200 text-gray-700'}
+        breakClassName={'px-3 py-2 rounded-full bg-gray-200 text-gray-700'}
+      />
     </div>
   );
 };

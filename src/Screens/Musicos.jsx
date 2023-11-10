@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactPaginate from 'react-paginate';
 import MusicianCard from '../components/Musicos/MusicianCard';
 
 const musicians = [
@@ -70,12 +71,66 @@ const musicians = [
       instagram: 'https://www.instagram.com/ejemplo2',
     },
   },
+  {
+    id: 5,
+    nombre: 'Grettel Rodriguez Muñoz',
+    valoracion: '4',
+    instrumento: 'Marimba',
+    ubicación: 'Hojancha, Guanacaste, Costa Rica',
+    telefono: '+506 62238176',
+    correo: 'juan@example.com',
+    fechaNacimiento: '27/10/200',
+    descripcion: 'Marinbista talentoso con experiencia en musica tradicional.',
+    imagenURL: '/Img/Gree.jpg', 
+    redesSociales: {
+      facebook: 'https://www.facebook.com/ejemplo2',
+      whatsapp: 'https://twitter.com/ejemplo2',
+      instagram: 'https://www.instagram.com/ejemplo2',
+    },
+  },
+  {
+    id: 6,
+    nombre: 'Grettel Rodriguez Muñoz',
+    valoracion: '4',
+    instrumento: 'Marimba',
+    ubicación: 'Hojancha, Guanacaste, Costa Rica',
+    telefono: '+506 62238176',
+    correo: 'juan@example.com',
+    fechaNacimiento: '27/10/200',
+    descripcion: 'Marinbista talentoso con experiencia en musica tradicional.',
+    imagenURL: '/Img/Gree.jpg', 
+    redesSociales: {
+      facebook: 'https://www.facebook.com/ejemplo2',
+      whatsapp: 'https://twitter.com/ejemplo2',
+      instagram: 'https://www.instagram.com/ejemplo2',
+    },
+  },
+  {
+    id: 7,
+    nombre: 'Grettel Rodriguez Muñoz',
+    valoracion: '4',
+    instrumento: 'Marimba',
+    ubicación: 'Hojancha, Guanacaste, Costa Rica',
+    telefono: '+506 62238176',
+    correo: 'juan@example.com',
+    fechaNacimiento: '27/10/200',
+    descripcion: 'Marinbista talentoso con experiencia en musica tradicional.',
+    imagenURL: '/Img/Gree.jpg', 
+    redesSociales: {
+      facebook: 'https://www.facebook.com/ejemplo2',
+      whatsapp: 'https://twitter.com/ejemplo2',
+      instagram: 'https://www.instagram.com/ejemplo2',
+    },
+  },
   // Agrega más músicos aquí...
 ];
 
 const Musicos = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredMusicians, setFilteredMusicians] = useState(musicians); // Inicialmente, muestra todos los músicos
+  const [filteredMusicians, setFilteredMusicians] = useState(musicians);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const musiciansPerPage = 6; // Define la cantidad de músicos por página
 
   const handleSearchChange = (e) => {
     const newSearchTerm = e.target.value;
@@ -89,11 +144,20 @@ const Musicos = () => {
         musician.nombre.toLowerCase().includes(term.toLowerCase()) ||
         musician.instrumento.toLowerCase().includes(term.toLowerCase()) ||
         musician.ubicación.toLowerCase().includes(term.toLowerCase()) ||
-        musician.valoracion.toString().includes(term) // Convertir a cadena y luego buscar
-        // Agrega más condiciones de filtrado según tus variables
+        musician.valoracion.toString().includes(term)
       );
     });
     setFilteredMusicians(filtered);
+    setCurrentPage(0); // Reiniciar a la primera página cuando se realiza una búsqueda
+  };
+
+  const offset = currentPage * musiciansPerPage;
+  const currentMusicians = filteredMusicians.slice(offset, offset + musiciansPerPage);
+
+  const pageCount = Math.ceil(filteredMusicians.length / musiciansPerPage);
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
   };
 
   return (
@@ -108,10 +172,29 @@ const Musicos = () => {
         />
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 bg-[#D9D9D9] p-4">
-        {filteredMusicians.map((musician) => (
+        {currentMusicians.map((musician) => (
           <MusicianCard key={musician.id} musician={musician} />
         ))}
       </div>
+
+      {pageCount > 1 && (
+        <ReactPaginate
+          previousLabel={'Anterior'}
+          nextLabel={'Siguiente'}
+          breakLabel={'...'}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
+          containerClassName={'flex justify-center mt-4 mb-4 space-x-2'}
+          subContainerClassName={'flex items-center'}
+          activeClassName={'bg-blue-500 text-white px-3 py-2 rounded-full'}
+          pageClassName={'px-3 py-2 rounded-full bg-gray-200 text-gray-700'}
+          previousClassName={'px-3 py-2 rounded-full bg-gray-200 text-gray-700'}
+          nextClassName={'px-3 py-2 rounded-full bg-gray-200 text-gray-700'}
+          breakClassName={'px-3 py-2 rounded-full bg-gray-200 text-gray-700'}
+        />
+      )}
     </div>
   );
 };
