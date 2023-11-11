@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { createRecruitment, updateRecruitment, deleteRecruitment, getAllRecruitments, getRecruitmentById } from '../Services/recruitments';
+import { createRecruitment, updateRecruitment, deleteRecruitment, getAllRecruitments } from '../Services/recruitments';
 
 const Prueba2 = () => {
   const [formData, setFormData] = useState({
-    id: null,
+    id: null, // Nuevo campo para el ID del reclutamiento (para actualizaciones)
     date_hire: '',
     start_time: '',
     end_time: '',
     event_location: '',
     type_event: '',
-    agreed_rate: '',
+    agreed_rate: '', // Dejamos esto como cadena
     payment_status: '',
     payment_date: '',
   });
 
-  const [recruitments, setRecruitments] = useState([]);
-  const [creating, setCreating] = useState(true);
-  const [selectedRecruitment, setSelectedRecruitment] = useState(null);
+  const [recruitments, setRecruitments] = useState([]); // Para mostrar la lista de reclutamientos
+  const [creating, setCreating] = useState(true); // Para saber si estamos creando o actualizando
 
   const fetchRecruitments = async () => {
     try {
@@ -29,14 +28,15 @@ const Prueba2 = () => {
 
   useEffect(() => {
     fetchRecruitments();
-  }, []);
+  }, []); // Esto se ejecutará al cargar el componente
 
   const handleCreateRecruitment = async () => {
     try {
-      const { id, ...newFormData } = formData;
+      const { id, ...newFormData } = formData; // Elimina el campo 'id'
       newFormData.agreed_rate = parseFloat(newFormData.agreed_rate);
-
+  
       const newRecruitment = await createRecruitment(newFormData);
+      // Actualiza la lista de reclutamientos
       fetchRecruitments();
       clearForm();
     } catch (error) {
@@ -47,6 +47,7 @@ const Prueba2 = () => {
   const handleUpdateRecruitment = async () => {
     try {
       const updatedRecruitment = await updateRecruitment(formData.id, formData);
+      // Actualiza la lista de reclutamientos
       fetchRecruitments();
       clearForm();
     } catch (error) {
@@ -57,6 +58,7 @@ const Prueba2 = () => {
   const handleDeleteRecruitment = async (id) => {
     try {
       await deleteRecruitment(id);
+      // Actualiza la lista de reclutamientos
       fetchRecruitments();
       clearForm();
     } catch (error) {
@@ -64,29 +66,20 @@ const Prueba2 = () => {
     }
   };
 
-  const handleEditRecruitment = async (recruitment) => {
-    try {
-      const selected = await getRecruitmentById(recruitment.id);
-      setFormData({ ...selected });
-      setSelectedRecruitment(selected);
-      setCreating(false);
-    } catch (error) {
-      console.error('Error al obtener los detalles del reclutamiento', error);
-    }
+  const handleEditRecruitment = (recruitment) => {
+    setFormData({
+      id: recruitment.id,
+      date_hire: recruitment.date_hire,
+      start_time: recruitment.start_time,
+      end_time: recruitment.end_time,
+      event_location: recruitment.event_location,
+      type_event: recruitment.type_event,
+      agreed_rate: recruitment.agreed_rate.toString(),
+      payment_status: recruitment.payment_status,
+      payment_date: recruitment.payment_date,
+    });
+    setCreating(false);
   };
-
-  const handleShowDetails = async (recruitment) => {
-    try {
-      const selected = await getRecruitmentById(recruitment.id);
-      setFormData({ ...selected });
-      setSelectedRecruitment(selected);
-    } catch (error) {
-      console.error('Error al obtener los detalles del reclutamiento', error);
-    }
-  };
-  
-  
-
 
   const clearForm = () => {
     setFormData({
@@ -101,12 +94,12 @@ const Prueba2 = () => {
       payment_date: '',
     });
     setCreating(true);
-    setSelectedRecruitment(null);
   };
 
   return (
     <div>
       <h2 style={{ textAlign: 'center' }}>{creating ? 'Crear Reclutamiento' : 'Actualizar Reclutamiento'}</h2>
+    
       <form>
   <div>
     <label>Fecha de Contratación</label>
@@ -187,6 +180,7 @@ const Prueba2 = () => {
   </button>
 </form>
 
+
       <h2 style={{ textAlign: 'center' }}>Reclutamientos</h2>
       <ul>
         {recruitments.map((recruitment) => (
@@ -194,12 +188,9 @@ const Prueba2 = () => {
             {recruitment.date_hire} - {recruitment.event_location}
             <button onClick={() => handleEditRecruitment(recruitment)}>Editar</button>
             <button onClick={() => handleDeleteRecruitment(recruitment.id)}>Eliminar</button>
-            <button onClick={() => handleShowDetails(recruitment)}> Mostrar Detalles</button>
           </li>
         ))}
       </ul>
-
-    
     </div>
   );
 };

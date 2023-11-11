@@ -24,6 +24,13 @@ import VerMusico from './Dashboard/Cruds/Musicos/VerMusico';
 import EditarMusico from './Dashboard/Cruds/Musicos/EditarMusico';
 import Error404 from './Screens/Error404';
 
+//admin
+import AgregarReclutamiento from './Dashboard/Cruds/Reclutamientos/AgregarReclutamiento';
+import DTreclutamiento from './Screens/Admin/DTreclutamiento';
+import DataTableProfileBusiness from './Screens/Admin/DTperfildenegocio';
+import DataTableCategoryBusiness from './Screens/Admin/DTcategoria';
+import DataTableReview from './Screens/Admin/DTreviews';
+
 const queryClient = new QueryClient(); // Crea una instancia del QueryClient
 
 function App() {
@@ -41,12 +48,21 @@ function App() {
             <Route path='/InicioSesion' element={<InicioSesion/>}/>
             <Route path='/Registrarse' element={<Registrarse/>}/>
             <Route path='/RecuperarContraseña' element={<RecuperarContrasena/>}/>
+            <Route path='/AgregarReclutamiento' element={<AgregarReclutamiento/>}/>
+            <Route path='/DTreclutamiento' element={<DTreclutamiento/>}/>
+            <Route path='/DataTableProfileBusiness' element={<DataTableProfileBusiness/>}/>
+            <Route path='/DataTableCategoryBusiness' element={<DataTableCategoryBusiness/>}/>
+            <Route path='/DataTableReview' element={<DataTableReview/>}/>
             <Route path='/Dashboard' element={<Dashboard/>}>
               <Route index element={<Home/>}/>
               <Route path='Musico' element={<DataTable/>} />
               <Route path='AgregarMusico' element={<AgregarMusico/>} />
               <Route path='VerMusico' element={<VerMusico/>} />
               <Route path='EditarMusico' element={<EditarMusico/>} />
+              <Route path='DataTableReview' element={<DataTableReview/>} />
+              <Route path='DataTableReclutamiento' element={<DTreclutamiento/>} />
+              <Route path='DataTableCategoryBusiness' element={<DataTableCategoryBusiness/>} />
+              <Route path='DataTableProfileBusiness' element={<DataTableProfileBusiness/>} />
             </Route>
             <Route path='*' element={<Error404/>}/>
           </Routes>

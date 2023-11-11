@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
+
 import {
   RiHome6Line,
   RiMusic2Line,
@@ -13,6 +14,12 @@ import {
   RiUser3Line,
   RiLogoutCircleRLine,
 } from "react-icons/ri";
+
+import { FaBusinessTime  } from "react-icons/fa";
+
+import { ImProfile  } from "react-icons/im";
+
+import { AiFillStar } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
 function Dashboard() {
@@ -69,10 +76,35 @@ function Dashboard() {
             </li>
             <li>
               <a
-                href="/Dashboard/Contratantes"
+                // href="/Dashboard/Contratantes"
+                href="/Dashboard/DataTableReclutamiento"
                 className="flex items-center gap-4 hover:bg-[#D1C6AE] text-white transition-colors py-2 px-4 rounded-lg"
               >
-                <RiMoneyDollarCircleLine /> Contratantes
+                <RiMoneyDollarCircleLine /> Reclutamiento
+              </a>
+            </li>
+            <li>
+              <a
+                href="/Dashboard/DataTableProfileBusiness"
+                className="flex items-center gap-4 hover:bg-[#D1C6AE] text-white transition-colors py-2 px-4 rounded-lg"
+              >
+                <ImProfile /> Perfil de negocio
+              </a>
+            </li>
+            <li>
+              <a
+                href="/Dashboard/DataTableReview"
+                className="flex items-center gap-4 hover:bg-[#D1C6AE] text-white transition-colors py-2 px-4 rounded-lg"
+              >
+                <AiFillStar /> Revisión
+              </a>
+            </li>
+            <li>
+              <a
+                href="/Dashboard/DataTableCategoryBusiness"
+                className="flex items-center gap-4 hover:bg-[#D1C6AE] text-white transition-colors py-2 px-4 rounded-lg"
+              >
+                <FaBusinessTime /> Categoría de negocio
               </a>
             </li>
           </ul>
@@ -100,7 +132,7 @@ function Dashboard() {
         <nav className="flex items-center gap-2 text-lg">
           <Menu as="div">
             <Menu.Button className="flex items-center gap-4 hover:bg-[#700E11] py-2 px-4 rounded-lg transition-colors relative">
-          
+
               <span className="text-white">Gerald Gonzalez Valdes</span>
               <RiArrowDownSLine className="text-white" />
             </Menu.Button>

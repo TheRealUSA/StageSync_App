@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactPaginate from 'react-paginate';
 import OportunitiCard from '../components/Oportunidades/OportunitiCard';
 
 const Oportunitis = [
@@ -129,6 +130,10 @@ const Oportunitis = [
 const Oportunidades = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredOportunitis, setFilteredOportunitis] = useState(Oportunitis); // Inicialmente, muestra todos los músicos
+  const [currentPage, setCurrentPage] = useState(0); 
+
+  const OportunitisPerPage = 9; // Define la cantidad de músicos por página
+
 
   const handleSearchChange = (e) => {
     const newSearchTerm = e.target.value;
@@ -147,6 +152,16 @@ const Oportunidades = () => {
       );
     });
     setFilteredOportunitis(filtered);
+    setCurrentPage(0); // Reiniciar a la primera página cuando se realiza una búsqueda
+  };
+
+  const offset = currentPage * OportunitisPerPage;
+  const currentOportunitis = filteredOportunitis.slice(offset, offset + OportunitisPerPage);
+
+  const pageCount = Math.ceil(filteredOportunitis.length / OportunitisPerPage);
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
   };
 
   return (
@@ -161,10 +176,28 @@ const Oportunidades = () => {
         />
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 bg-[#D9D9D9] p-4">
-        {filteredOportunitis.map((Oportuniti) => (
+        {currentOportunitis.map((Oportuniti) => (
           <OportunitiCard key={Oportuniti.id} Oportuniti={Oportuniti} />
         ))}
       </div>
+      {pageCount > 1 && (
+        <ReactPaginate
+          previousLabel={'Anterior'}
+          nextLabel={'Siguiente'}
+          breakLabel={'...'}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
+          containerClassName={'flex justify-center mt-4 mb-4 space-x-2'}
+          subContainerClassName={'flex items-center'}
+          activeClassName={'bg-blue-500 text-white px-3 py-2 rounded-full'}
+          pageClassName={'px-3 py-2 rounded-full bg-gray-200 text-gray-700'}
+          previousClassName={'px-3 py-2 rounded-full bg-gray-200 text-gray-700'}
+          nextClassName={'px-3 py-2 rounded-full bg-gray-200 text-gray-700'}
+          breakClassName={'px-3 py-2 rounded-full bg-gray-200 text-gray-700'}
+        />
+      )}
     </div>
   );
 };
