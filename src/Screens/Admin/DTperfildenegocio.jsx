@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 import { createProfileBusiness, updateProfileBusiness, deleteProfileBusiness, getAllProfileBusinesses, getProfileBusinessById } from '../../Services/profilebusinesses';
 import { AiFillEdit, AiFillDelete, AiFillEye } from 'react-icons/ai';
+import { getAllCategoryBusinesses } from '../../Services/categorybusines';
 
 const DataTableProfileBusiness = () => {
   const [formData, setFormData] = useState({
@@ -23,11 +24,14 @@ const DataTableProfileBusiness = () => {
     about: '',
     facebook: '',
     instagram: '',
+    categoryId: '',
   });
+  
 
   const [profileBusiness, setProfileBusiness] = useState([]);
   const [creating, setCreating] = useState(true);
   const [selectedProfileBusines, setSelectedProfileBusines] = useState(null);
+  const [categories, setCategories] = useState([]); // Estado para las categorías
 
   const fetchProfileBusiness = async () => {
     try {
@@ -40,6 +44,14 @@ const DataTableProfileBusiness = () => {
 
   useEffect(() => {
     fetchProfileBusiness();
+   
+    getAllCategoryBusinesses()
+      .then((categories) => {
+        setCategories(categories);
+      })
+      .catch((error) => {
+        console.error('Error al obtener categorías:', error);
+      });
   }, []);
 
   const handleCreateProfileBusines = async () => {
@@ -97,6 +109,7 @@ const DataTableProfileBusiness = () => {
       console.error('Error al obtener los detalles del perfil de negocio', error);
     }
   };
+  
 
   const handleCheckboxChange = (day) => {
     const updatedDays = formData.days_of_the_week.includes(day)
@@ -126,8 +139,10 @@ const DataTableProfileBusiness = () => {
       about: '',
       facebook: '',
       instagram: '',
+      categoryId: '',
     });
     setCreating(true);
+    
     setSelectedProfileBusines(null);
   };
 
@@ -348,6 +363,22 @@ const DataTableProfileBusiness = () => {
                 onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
                 className="w-full p-2 border rounded"
               />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="categoryId" className="block font-medium text-gray-700">Categoría del negocio</label>
+              <select
+                name="categoryId"
+                value={formData.categoryId}
+                onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
+                className="w-full p-2 border rounded"
+              >
+                <option value="">Selecciona una categoría</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="mt-4">

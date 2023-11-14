@@ -19,7 +19,7 @@ const DataTablereclutamiento = () => {
   const [recruitments, setRecruitments] = useState([]);
   const [creating, setCreating] = useState(true);
   const [selectedRecruitment, setSelectedRecruitment] = useState(null);
-
+  const [errorMessages, setErrorMessages] = useState([]); 
   const fetchRecruitments = async () => {
     try {
       const response = await getAllRecruitments();
@@ -42,8 +42,13 @@ const DataTablereclutamiento = () => {
       fetchRecruitments();
       clearForm();
     } catch (error) {
-      console.error('Error al crear reclutamiento', error);
-    }
+      if (error.response && error.response.data && error.response.data.message) {
+        // Actualiza el estado de errorMessages con los mensajes de error
+        setErrorMessages([error.response.data.message]);
+      } else {
+        // Maneja otros errores, si es necesario
+        console.error('Error al crear reclutamiento', error);
+      }}
   };
 
   const handleUpdateRecruitment = async () => {
@@ -130,11 +135,13 @@ const DataTablereclutamiento = () => {
   const currentItems = filteredRecruitments.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
+    
     <div className="container mx-auto p-4">
       <form>
         <div className={`mt-4 ${containerVisible ? '' : 'hidden'}`}>
           <h2 className="text-2xl text-center">{creating ? 'Crear Reclutamiento' : 'Actualizar Reclutamiento'}</h2>
           <div className="mt-4 p-4 bg-white shadow-md rounded-md grid grid-cols-2 gap-4">
+            
             <div className="mb-4">
               <label htmlFor="date_hire" className="block font-medium text-gray-700">Fecha de Contratación</label>
               <input
@@ -196,15 +203,22 @@ const DataTablereclutamiento = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="payment_status" className="block font-medium text-gray-700">Estado de Pago</label>
-              <input
-                type="text"
-                id="payment_status"
-                value={formData.payment_status}
-                onChange={(e) => setFormData({ ...formData, payment_status: e.target.value })}
-                className="w-full p-2 border rounded"
-              />
-            </div>
+  <label htmlFor="payment_status" className="block font-medium text-gray-700">
+    Estado de Pago
+  </label>
+  <select
+    name="payment_status"
+    value={formData.payment_status}
+    onChange={(e) => setFormData({ ...formData, payment_status: e.target.value })}
+    className="w-full p-2 border rounded"
+  >
+    <option value="Pendiente">Pendiente</option>
+    <option value="Cancelado">Cancelado</option>
+    <option value="En progreso">En progreso</option>
+  </select>
+  
+</div>
+
             <div className="mb-4">
               <label htmlFor="payment_date" className="block font-medium text-gray-700">Fecha de Pago</label>
               <input
@@ -217,6 +231,7 @@ const DataTablereclutamiento = () => {
             </div>
           </div>
           <div className="mt-4">
+    
             {creating ? (
               <button
                 type="button"
@@ -242,6 +257,7 @@ const DataTablereclutamiento = () => {
               Limpiar
             </button>
           </div>
+
         </div>
       </form>
 

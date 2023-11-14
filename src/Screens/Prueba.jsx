@@ -1,39 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { getAllRecruitments, getRecruitmentById } from '../Services/recruitments';
+import { getProfileBusinessById, getAllProfileBusinesses } from '../Services/profilebusinesses';
 
 const Prueba = () => {
-  const [selectedRecruitment, setSelectedRecruitment] = useState(null);
-  const [recruitments, setRecruitments] = useState([]);
+  const [selectedProfileBusiness, setSelectedProfileBusiness] = useState(null);
+  const [profileBusinesses, setProfileBusinesses] = useState([]);
 
-  const loadRecruitments = async () => {
+  const loadProfileBusinesses = async () => {
     try {
-      const data = await getAllRecruitments();
-      setRecruitments(data);
+      const data = await getAllProfileBusinesses();
+      setProfileBusinesses(data);
     } catch (error) {
-      console.error('Error al cargar reclutamientos', error);
+      console.error('Error al cargar perfiles de negocio', error);
     }
   };
 
-  const handleLoadRecruitment = async (id) => {
+  const handleLoadProfileBusiness = async (id) => {
     try {
-      const data = await getRecruitmentById(id);
-      setSelectedRecruitment(data);
+      const data = await getProfileBusinessById(id);
+      setSelectedProfileBusiness(data);
     } catch (error) {
-      console.error('Error al cargar los detalles del reclutamiento', error);
+      console.error('Error al cargar los detalles del perfil de negocio', error);
     }
   };
 
   useEffect(() => {
-    loadRecruitments();
+    loadProfileBusinesses();
   }, []);
 
   return (
     <div>
-      <h2 style={{ textAlign: 'center' }}>Reclutamientos</h2>
+      <h2 style={{ textAlign: 'center' }}>Perfiles de Negocio</h2>
       <ul style={{ listStyleType: 'none', padding: 0 }}>
-        {recruitments.map((recruitment) => (
+        {profileBusinesses.map((profileBusiness) => (
           <li
-            key={recruitment.id}
+            key={profileBusiness.id}
             style={{
               border: '1px solid #ccc',
               margin: '10px',
@@ -43,14 +43,14 @@ const Prueba = () => {
             }}
           >
             <span>
-              {recruitment.date_hire} - {recruitment.event_location}
+              {profileBusiness.business_name} - {profileBusiness.city}
             </span>
-            <button onClick={() => handleLoadRecruitment(recruitment.id)}>Ver Detalles</button>
+            <button onClick={() => handleLoadProfileBusiness(profileBusiness.id)}>Ver Detalles</button>
           </li>
         ))}
       </ul>
 
-      {selectedRecruitment && (
+      {selectedProfileBusiness && (
         <div
           style={{
             backgroundColor: '#f0f0f0',
@@ -59,41 +59,46 @@ const Prueba = () => {
             margin: '10px',
           }}
         >
-          <h3 style={{ textAlign: 'center' }}>Detalles del Reclutamiento</h3>
+          <h3 style={{ textAlign: 'center' }}>Detalles del Perfil de Negocio</h3>
           <p>
-            <strong>Fecha de Contratación:</strong> {selectedRecruitment.date_hire}
+            <strong>Nombre del Negocio:</strong> {selectedProfileBusiness.business_name}
           </p>
           <p>
-            <strong>Hora de Inicio:</strong> {selectedRecruitment.start_time}
+            <strong>Propietario:</strong> {selectedProfileBusiness.owner_name} {selectedProfileBusiness.owner_lastname1} {selectedProfileBusiness.owner_lastname2}
           </p>
           <p>
-            <strong>Hora de Finalización:</strong> {selectedRecruitment.end_time}
+            <strong>Ubicación:</strong> {selectedProfileBusiness.city}, {selectedProfileBusiness.state}
           </p>
           <p>
-            <strong>Ubicación del Evento:</strong> {selectedRecruitment.event_location}
+            <strong>Dirección:</strong> {selectedProfileBusiness.address}
           </p>
           <p>
-            <strong>Tipo de Evento:</strong> {selectedRecruitment.type_event}
+            <strong>Días de la Semana:</strong> {selectedProfileBusiness.days_of_the_week}
           </p>
           <p>
-            <strong>Tarifa Acordada:</strong> {selectedRecruitment.agreed_rate}
+            <strong>Hora de Apertura:</strong> {selectedProfileBusiness.openingTime}
           </p>
           <p>
-            <strong>Fecha de Pago:</strong> {selectedRecruitment.payment_date}
+            <strong>Hora de Cierre:</strong> {selectedProfileBusiness.closingTime}
           </p>
           <p>
-            <strong>Estado de Pago:</strong> {selectedRecruitment.payment_status}
+            <strong>Ruta del Avatar:</strong> {selectedProfileBusiness.avatar_route}
           </p>
-          {selectedRecruitment.musicianId && (
-            <p>
-              <strong>ID del Músico:</strong> {selectedRecruitment.musicianId}
-            </p>
-          )}
-          {selectedRecruitment.contractorId && (
-            <p>
-              <strong>ID del Contratista:</strong> {selectedRecruitment.contractorId}
-            </p>
-          )}
+          <p>
+            <strong>Nombre del Archivo del Avatar:</strong> {selectedProfileBusiness.avatar_filename}
+          </p>
+          <p>
+            <strong>Acerca de:</strong> {selectedProfileBusiness.about}
+          </p>
+          <p>
+            <strong>Facebook:</strong> {selectedProfileBusiness.facebook}
+          </p>
+          <p>
+            <strong>Instagram:</strong> {selectedProfileBusiness.instagram}
+          </p>
+          <p>
+            <strong>Categoría del Negocio:</strong> {selectedProfileBusiness.category.name}
+          </p>
         </div>
       )}
     </div>
