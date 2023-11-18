@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 import { createProfileBusiness, updateProfileBusiness, deleteProfileBusiness, getAllProfileBusinesses, getProfileBusinessById } from '../../Services/profilebusinesses';
 import { AiFillEdit, AiFillDelete, AiFillEye } from 'react-icons/ai';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
 
 const DataTableProfileBusiness = () => {
   const [formData, setFormData] = useState({
@@ -48,32 +52,73 @@ const DataTableProfileBusiness = () => {
       const newProfileBusines = await createProfileBusiness(newFormData);
       fetchProfileBusiness();
       clearForm();
+  
+      // Mostrar SweetAlert de éxito
+      MySwal.fire({
+        title: 'Creado',
+        text: 'El perfil de negocio ha sido creado correctamente.',
+        icon: 'success',
+      });
     } catch (error) {
       console.error('Error al crear el perfil de negocio', error);
+  
+      // Mostrar SweetAlert de error
+      MySwal.fire({
+        title: 'Error',
+        text: 'Hubo un error al crear el perfil de negocio.',
+        icon: 'error',
+      });
     }
   };
-
-
+  
   const handleUpdateProfileBusines = async () => {
     try {
-      const { id, ...updateData } = formData;  // Elimina el campo 'id'
+      const { id, ...updateData } = formData;
       const updatedProfileBusines = await updateProfileBusiness(formData.id, updateData);
       fetchProfileBusiness();
       clearForm();
+  
+      // Mostrar SweetAlert de éxito
+      MySwal.fire({
+        title: 'Actualizado',
+        text: 'El perfil de negocio ha sido actualizado correctamente.',
+        icon: 'success',
+      });
     } catch (error) {
       console.error('Error al actualizar el perfil de negocio', error);
+  
+      // Mostrar SweetAlert de error
+      MySwal.fire({
+        title: 'Error',
+        text: 'Hubo un error al actualizar el perfil de negocio.',
+        icon: 'error',
+      });
     }
   };
-
+  
   const handleDeleteProfileBusines = async (id) => {
     try {
-      await deleteProfileBusiness(id);
-      fetchProfileBusiness();
-      clearForm();
-    } catch (error) {
-      console.error('Error al eliminar el perfil de negocio', error);
-    }
-  };
+         const result = await MySwal.fire({
+           title: '¿Estás seguro?',
+           text: '¡No podrás revertir esto!',
+           icon: 'warning',
+           showCancelButton: true,
+           confirmButtonColor: '#3085d6',
+           cancelButtonColor: '#d33',
+           confirmButtonText: 'Sí, eliminarlo',
+           cancelButtonText: 'Cancelar',
+         });
+      if (result.isConfirmed) {
+         await deleteProfileBusiness(id);
+         fetchProfileBusiness();
+         clearForm();
+       MySwal.fire('Eliminado', 'El perfil de negocio ha sido eliminado.', 'success');
+         }
+       } catch (error) {
+         console.error('Error al eliminar el perfil de negocio', error);
+         MySwal.fire('Error', 'Hubo un error al eliminar el perfil de negocio.', 'error');
+       }
+     };
 
   const handleEditProfileBusines = async (ProfileBusines) => {
     try {

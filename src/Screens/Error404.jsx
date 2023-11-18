@@ -5,7 +5,7 @@ const Error404 = () => {
     <div className="flex items-center justify-center h-screen bg-[#5C1044]">
       <img
         src="./Img/Error404.webp"
-        alt="Descripción de la imagen"
+        alt="Error404"
         className="max-w-full max-h-full"
       />
     </div>

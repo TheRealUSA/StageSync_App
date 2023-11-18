@@ -17,8 +17,10 @@ function Inicio() {
 
   return (
     <>
-   <div className=" min-h-screen bg-[#700E11]">
+   <div className="min-h-screen bg-[#700E11]">
+      <div className="w-full min-w-screen-xl">
       <MyCarousel />
+      </div>
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="text-white text-center">
         <h1 className="text-3xl sm:text-5xl mb-5 font-bold tracking-widest">
@@ -128,6 +130,7 @@ function Inicio() {
           </div>
         </div>
       </div>
+     
     </>
   );
 }

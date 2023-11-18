@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 import { createCategoryBusiness, updateCategoryBusiness, deleteCategoryBusiness, getAllCategoryBusinesses, getCategoryBusinessById } from '../../Services/categorybusines';
 import { AiFillEdit, AiFillDelete, AiFillEye } from 'react-icons/ai';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
 
 const DataTableCategoryBusiness = () => {
   const [formData, setFormData] = useState({
@@ -29,35 +33,84 @@ const DataTableCategoryBusiness = () => {
   const handleCreateCategoryBusines = async () => {
     try {
       const { id, ...newFormData } = formData;
-
+  
       const newCategoryBusines = await createCategoryBusiness(newFormData);
       fetchCategoryBusiness();
       clearForm();
+  
+      // Mostrar mensaje de éxito con SweetAlert2
+      Swal.fire({
+        title: '¡Creada!',
+        text: 'La categoría de negocio ha sido creada con éxito.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      });
+  
     } catch (error) {
-      console.error('Error al crear la categoria de negocio', error);
+      console.error('Error al crear la categoría de negocio', error);
+  
+      // Mostrar mensaje de error con SweetAlert2
+      Swal.fire({
+        title: 'Error',
+        text: 'Hubo un error al crear la categoría de negocio.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
     }
   };
-
+  
   const handleUpdateCategoryBusines = async () => {
     try {
-      const { id, ...updateData } = formData;  // Elimina el campo 'id'
+      const { id, ...updateData } = formData;
       const updatedCategoryBusines = await updateCategoryBusiness(formData.id, updateData);
       fetchCategoryBusiness();
       clearForm();
+  
+      // Mostrar mensaje de éxito con SweetAlert2
+      Swal.fire({
+        title: '¡Actualizada!',
+        text: 'La categoría de negocio ha sido actualizada con éxito.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      });
+  
     } catch (error) {
-      console.error('Error al actualizar la categoria de negocio', error.response.data);
+      console.error('Error al actualizar la categoría de negocio', error);
+  
+      // Mostrar mensaje de error con SweetAlert2
+      Swal.fire({
+        title: 'Error',
+        text: 'Hubo un error al actualizar la categoría de negocio.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
     }
   };
+  
 
   const handleDeleteCategoryBusines = async (id) => {
     try {
+      const result = await MySwal.fire({
+        title: '¿Estás seguro?',
+        text: '¡No podrás revertir esto!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminarlo',
+        cancelButtonText: 'Cancelar',
+      });
+      if (result.isConfirmed) {
       await deleteCategoryBusiness(id);
       fetchCategoryBusiness();
       clearForm();
-    } catch (error) {
-      console.error('Error al eliminar la categoria de negocio', error);
+      MySwal.fire('Eliminado', 'La categoría ha sido eliminado.', 'success');
     }
-  };
+  } catch (error) {
+    console.error('Error al eliminar la categoría', error);
+    MySwal.fire('Error', 'Hubo un error al eliminar la categoría.', 'error');
+  }
+};
 
   const handleEditCategoryBusines = async (categoryBusiness) => {
     try {
@@ -120,7 +173,7 @@ const DataTableCategoryBusiness = () => {
     <div className="container mx-auto p-4">
       <form>
       <div className={`mt-4 ${containerVisible ? '' : 'hidden'}`}>
-      <h2 className="text-2xl text-center">{creating ? 'Crear Categoría de negocio' : 'Actualizar Categoría de negocio'}</h2>
+      <h2 className="text-2xl text-center">{creating ? 'Crear categoría de negocio' : 'Actualizar categoría de negocio'}</h2>
         <div className="mt-4 p-4 bg-white shadow-md rounded-md grid grid-cols-2 gap-4">
           <div className="mb-4">
             <label htmlFor="name" className="block font-medium text-gray-700">Nombre</label>

@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 import { createRecruitment, updateRecruitment, deleteRecruitment, getAllRecruitments, getRecruitmentById } from '../../Services/recruitments';
 import { AiFillEdit, AiFillDelete, AiFillEye } from 'react-icons/ai';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
 
 const DataTablereclutamiento = () => {
   const [formData, setFormData] = useState({
@@ -37,14 +41,29 @@ const DataTablereclutamiento = () => {
     try {
       const { id, ...newFormData } = formData;
       newFormData.agreed_rate = parseFloat(newFormData.agreed_rate);
-
+  
       const newRecruitment = await createRecruitment(newFormData);
       fetchRecruitments();
       clearForm();
+  
+      // Mostrar SweetAlert de éxito
+      MySwal.fire({
+        title: 'Creado',
+        text: 'El reclutamiento ha sido creado correctamente.',
+        icon: 'success',
+      });
     } catch (error) {
       console.error('Error al crear reclutamiento', error);
+  
+      // Mostrar SweetAlert de error
+      MySwal.fire({
+        title: 'Error',
+        text: 'Hubo un error al crear el reclutamiento.',
+        icon: 'error',
+      });
     }
   };
+  
 
   const handleUpdateRecruitment = async () => {
     try {
@@ -52,18 +71,48 @@ const DataTablereclutamiento = () => {
       const updatedRecruitment = await updateRecruitment(formData.id, updateData);
       fetchRecruitments();
       clearForm();
+  
+      // Mostrar SweetAlert de éxito
+      MySwal.fire({
+        title: 'Actualizado',
+        text: 'El reclutamiento ha sido actualizado correctamente.',
+        icon: 'success',
+      });
     } catch (error) {
       console.error('Error al actualizar el reclutamiento', error);
+  
+      // Mostrar SweetAlert de error
+      MySwal.fire({
+        title: 'Error',
+        text: 'Hubo un error al actualizar el reclutamiento.',
+        icon: 'error',
+      });
     }
   };
+  
 
   const handleDeleteRecruitment = async (id) => {
     try {
-      await deleteRecruitment(id);
-      fetchRecruitments();
-      clearForm();
+      const result = await MySwal.fire({
+        title: '¿Estás seguro?',
+        text: '¡No podrás revertir esto!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminarlo',
+        cancelButtonText: 'Cancelar',
+      });
+  
+      if (result.isConfirmed) {
+        await deleteRecruitment(id);
+        fetchRecruitments();
+        clearForm();
+        MySwal.fire('Eliminado', 'El reclutamiento ha sido eliminado.', 'success');
+      }
     } catch (error) {
       console.error('Error al eliminar el reclutamiento', error);
+      MySwal.fire('Error', 'Hubo un error al eliminar el reclutamiento.', 'error');
     }
   };
 

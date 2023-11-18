@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 import { createReview, updateReview, deleteReview, getAllReviews, getReviewById } from '../../Services/reviews';
 import { AiFillEdit, AiFillDelete, AiFillEye } from 'react-icons/ai';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
 
 const DataTableReview = () => {
   const [formData, setFormData] = useState({
@@ -30,38 +34,83 @@ const DataTableReview = () => {
   const handleCreateReview = async () => {
     try {
       const { id, ...newFormData } = formData;
-      // Elimina la siguiente línea, ya que la descripción debería ser una cadena de texto
-      // newFormData.description = parseFloat(newFormData.description);
       const newReview = await createReview(newFormData);
       console.log('Respuesta del servidor:', newReview);
       fetchReviews();
       clearForm();
+  
+      // Mostrar mensaje de éxito con SweetAlert2
+      Swal.fire({
+        title: '¡Creado!',
+        text: 'La reseña ha sido creada con éxito.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      });
+  
     } catch (error) {
-      console.error('Error al crear la categoria de negocio', error);
+      console.error('Error al crear la reseña', error);
+  
+      // Mostrar mensaje de error con SweetAlert2
+      Swal.fire({
+        title: 'Error',
+        text: 'Hubo un error al crear la reseña.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
     }
   };
-
+  
   const handleUpdateReview = async () => {
     try {
-      const { id, ...updateData } = formData;  // Elimina el campo 'id'
+      const { id, ...updateData } = formData;
       const updatedReview = await updateReview(formData.id, updateData);
       fetchReviews();
       clearForm();
+  
+      // Mostrar mensaje de éxito con SweetAlert2
+      Swal.fire({
+        title: '¡Actualizado!',
+        text: 'La reseña ha sido actualizada con éxito.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      });
+  
     } catch (error) {
-      console.error('Error al actualizar la categoria de negocio', error);
+      console.error('Error al actualizar la reseña', error);
+  
+      // Mostrar mensaje de error con SweetAlert2
+      Swal.fire({
+        title: 'Error',
+        text: 'Hubo un error al actualizar la reseña.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
     }
-  };
+  }; 
 
   const handleDeleteReview = async (id) => {
     try {
+      const result = await MySwal.fire({
+        title: '¿Estás seguro?',
+        text: '¡No podrás revertir esto!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminarlo',
+        cancelButtonText: 'Cancelar',
+      });
+      if (result.isConfirmed) {
       await deleteReview(id);
       fetchReviews();
       clearForm();
-    } catch (error) {
-      console.error('Error al eliminar la categoria de negocio', error);
+      MySwal.fire('Eliminado', 'La reseña ha sido eliminado.', 'success');
     }
-  };
-
+  } catch (error) {
+    console.error('Error al eliminar la reseña', error);
+    MySwal.fire('Error', 'Hubo un error al eliminar la reseña.', 'error');
+  }
+};
   const handleEditReview = async (reviews) => {
     try {
       const selected = await getReviewById(reviews.id);
