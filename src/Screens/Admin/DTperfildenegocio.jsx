@@ -222,7 +222,7 @@ const DataTableProfileBusiness = () => {
             <div className="mb-4">
               <label htmlFor="phone_number" className="block font-medium text-gray-700">Numero de teléfono</label>
               <input
-                type="text"
+                type="number"
                 id="phone_number"
                 value={formData.phone_number}
                 onChange={(e) => setFormData({ ...formData, phone_number: e.target.value })}

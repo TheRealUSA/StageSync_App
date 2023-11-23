@@ -30,6 +30,8 @@ import DTreclutamiento from './Screens/Admin/DTreclutamiento';
 import DataTableProfileBusiness from './Screens/Admin/DTperfildenegocio';
 import DataTableCategoryBusiness from './Screens/Admin/DTcategoria';
 import DataTableReview from './Screens/Admin/DTreviews';
+import DataTableCategorySkills from './Screens/Admin/DTcategoriaSkills';
+import DataTableSkills from './Screens/Admin/DTSkills';
 
 const queryClient = new QueryClient(); // Crea una instancia del QueryClient
 
@@ -52,6 +54,8 @@ function App() {
             <Route path='/DTreclutamiento' element={<DTreclutamiento/>}/>
             <Route path='/DataTableProfileBusiness' element={<DataTableProfileBusiness/>}/>
             <Route path='/DataTableCategoryBusiness' element={<DataTableCategoryBusiness/>}/>
+            <Route path='/DataTableCategorySkills' element={<DataTableCategorySkills/>}/>
+            <Route path='/DataTableSkills' element={<DataTableSkills/>}/>
             <Route path='/DataTableReview' element={<DataTableReview/>}/>
             <Route path='/Dashboard' element={<Dashboard/>}>
               <Route index element={<Home/>}/>
@@ -63,6 +67,8 @@ function App() {
               <Route path='DataTableReclutamiento' element={<DTreclutamiento/>} />
               <Route path='DataTableCategoryBusiness' element={<DataTableCategoryBusiness/>} />
               <Route path='DataTableProfileBusiness' element={<DataTableProfileBusiness/>} />
+              <Route path='DataTableCategorySkills' element={<DataTableCategorySkills/>} />
+              <Route path='DataTableSkills' element={<DataTableSkills/>} />
             </Route>
             <Route path='*' element={<Error404/>}/>
           </Routes>

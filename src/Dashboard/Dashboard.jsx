@@ -15,9 +15,9 @@ import {
   RiLogoutCircleRLine,
 } from "react-icons/ri";
 
-import { FaBusinessTime  } from "react-icons/fa";
+import { FaAddressCard, FaBusinessTime, FaBowlingBall } from "react-icons/fa";
 
-import { ImProfile  } from "react-icons/im";
+import { ImProfile } from "react-icons/im";
 
 import { AiFillStar } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
@@ -37,11 +37,15 @@ function Dashboard() {
     <div className="min-h-screen">
       {/* Sidebar */}
       <div
-        className={`fixed top-0 w-3/4 xl:left-0 md:w-96 h-full bg-[#700E11] p-8 flex flex-col justify-between z-50 transition-all overflow-y-auto ${showMenu ? "left-0" : "-left-full"
-          } `}
+        className={`fixed top-0 w-3/4 xl:left-0 md:w-96 h-full bg-[#700E11] p-8 flex flex-col justify-between z-50 transition-all overflow-y-auto ${
+          showMenu ? "left-0" : "-left-full"
+        } `}
       >
         <div>
-          <Link to={"/"} className="text-white flex intem-center justify-center mb-5">
+          <Link
+            to={"/"}
+            className="text-white flex intem-center justify-center mb-5"
+          >
             <img
               src="/Img/Dash.png"
               alt="Logo Stage Sync CR"
@@ -63,7 +67,7 @@ function Dashboard() {
                 href="/Dashboard/Usuarios"
                 className="flex items-center gap-4 hover:bg-[#D1C6AE] text-white transition-colors py-2 px-4 rounded-lg"
               >
-                <RiUser3Line /> Usuarios
+                <RiUser3Line /> Publicaciones u ofertas
               </a>
             </li>
             <li>
@@ -71,7 +75,7 @@ function Dashboard() {
                 href="/Dashboard/Musico"
                 className="flex items-center gap-4 hover:bg-[#D1C6AE] text-white transition-colors py-2 px-4 rounded-lg"
               >
-                <RiMusic2Line /> Musicos
+                <RiMusic2Line /> Postulaciones
               </a>
             </li>
             <li>
@@ -80,7 +84,7 @@ function Dashboard() {
                 href="/Dashboard/DataTableReclutamiento"
                 className="flex items-center gap-4 hover:bg-[#D1C6AE] text-white transition-colors py-2 px-4 rounded-lg"
               >
-                <RiMoneyDollarCircleLine /> Reclutamiento
+                <RiMoneyDollarCircleLine /> Contrataciones
               </a>
             </li>
             <li>
@@ -105,6 +109,38 @@ function Dashboard() {
                 className="flex items-center gap-4 hover:bg-[#D1C6AE] text-white transition-colors py-2 px-4 rounded-lg"
               >
                 <FaBusinessTime /> Categoría de negocio
+              </a>
+            </li>
+            <li>
+              <a
+                href="/Dashboard/DataTableCategorySkills"
+                className="flex items-center gap-4 hover:bg-[#D1C6AE] text-white transition-colors py-2 px-4 rounded-lg"
+              >
+                <FaAddressCard /> Categoria de Habilidades
+              </a>
+            </li>
+            <li>
+              <a
+                href="/Dashboard/DataTableSkills"
+                className="flex items-center gap-4 hover:bg-[#D1C6AE] text-white transition-colors py-2 px-4 rounded-lg"
+              >
+                <FaBusinessTime /> Habilidades
+              </a>
+            </li>
+            <li>
+              <a
+                href="/Dashboard/DataTableCategoryBusiness"
+                className="flex items-center gap-4 hover:bg-[#D1C6AE] text-white transition-colors py-2 px-4 rounded-lg"
+              >
+                <RiUser3Line /> Perfil de Usuario
+              </a>
+            </li>
+            <li>
+              <a
+                href="/Dashboard/DataTableCategoryBusiness"
+                className="flex items-center gap-4 hover:bg-[#D1C6AE] text-white transition-colors py-2 px-4 rounded-lg"
+              >
+                <FaBusinessTime /> Usuarios
               </a>
             </li>
           </ul>
@@ -132,7 +168,6 @@ function Dashboard() {
         <nav className="flex items-center gap-2 text-lg">
           <Menu as="div">
             <Menu.Button className="flex items-center gap-4 hover:bg-[#700E11] py-2 px-4 rounded-lg transition-colors relative">
-
               <span className="text-white">Gerald Gonzalez Valdes</span>
               <RiArrowDownSLine className="text-white" />
             </Menu.Button>
@@ -155,7 +190,9 @@ function Dashboard() {
                       className="flex items-center gap-4 p-2 rounded-lg hover:bg-[#D1C6AE] transition-colors"
                     >
                       <div>
-                        <h5 className="text-base text-white">Gerald Gonzalez Valdes</h5>
+                        <h5 className="text-base text-white">
+                          Gerald Gonzalez Valdes
+                        </h5>
                         <p className="text-white text-xs">
                           gerald.gonzalez.valdes@gmail.com
                         </p>

@@ -1,123 +1,122 @@
 import React, { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import {
-  createCategoryBusiness,
-  updateCategoryBusiness,
-  deleteCategoryBusiness,
-  getAllCategoryBusinesses,
-  getCategoryBusinessById,
-} from "../../Services/categorybusines";
+  createSkill,
+  updateSkill,
+  getAllSkills,
+  getSkillById,
+  deleteSkill,
+} from "../../Services/skills";
 import { AiFillEdit, AiFillDelete, AiFillEye } from "react-icons/ai";
-
-const DataTableCategoryBusiness = () => {
+import { getAllCategorySkills } from "../../Services/categorySkills";
+const DataTableSkills = () => {
   const [formData, setFormData] = useState({
     name: "",
+    category: null,
   });
-
-  const [categoryBusiness, setCategoryBusiness] = useState([]);
+  const [skills, setSkills] = useState([]);
   const [creating, setCreating] = useState(true);
-  const [selectedCategoryBusines, setSelectedCategoryBusiness] = useState(null);
+  const [selectedSkill, setSelectedSkill] = useState(null);
+  const [containerVisible, setContainerVisible] = useState(false);
+  const [filter, setFilter] = useState("");
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(0);
+  const [categories, setCategories] = useState([]); // Estado para las categorías
 
-  const fetchCategoryBusiness = async () => {
+  const fetchSkills = async () => {
     try {
-      const response = await getAllCategoryBusinesses();
-      setCategoryBusiness(response);
+      const response = await getAllSkills();
+      setSkills(response);
     } catch (error) {
-      console.error("Error al obtener la categoria de negocio", error);
+      console.error("Error al obtener las habilidades", error);
     }
   };
 
   useEffect(() => {
-    fetchCategoryBusiness();
+    fetchSkills();
+
+    getAllCategorySkills()
+      .then((categories) => {
+        setCategories(categories);
+      })
+      .catch((error) => {
+        console.error("Error al obtener categorías:", error);
+      });
   }, []);
 
-  const handleCreateCategoryBusines = async () => {
+  const handleCreateSkill = async () => {
     try {
-      const { id, ...newFormData } = formData;
-      const newCategoryBusines = await createCategoryBusiness(newFormData);
-      fetchCategoryBusiness();
+      const { category, ...restFormData } = formData;
+      const parsedCategory = parseInt(category, 10);
+  
+      if (isNaN(parsedCategory)) {
+        // Manejar el caso en el que 'category' no sea un número válido
+        // Puedes lanzar un error, establecer un valor por defecto o manejarlo de otra manera
+        throw new Error("La categoría debe ser un número válido");
+      }
+  
+      // Asignar 'parsedCategory' al 'newFormData'
+      const newFormData = { ...restFormData, category: parsedCategory };
+  
+      const newSkill = await createSkill(newFormData);
+      fetchSkills();
       clearForm();
     } catch (error) {
-      console.error("Error al crear la categoria de negocio", error);
+      console.error("Error al crear la habilidad", error);
+    }
+  };
+  
+  const handleUpdateSkill = async () => {
+    try {
+      const { id, ...updateData } = formData;
+      const parseId = parseInt(updateData.category);
+      updateData.category = parseId;
+      const updatedSkill = await updateSkill(formData.id, updateData);
+      fetchSkills();
+      clearForm();
+    } catch (error) {
+      console.error("Error al actualizar la habilidad", error.response.data);
     }
   };
 
-  const handleUpdateCategoryBusines = async () => {
+  const handleDeleteSkill = async (id) => {
     try {
-      const { id, ...updateData } = formData; // Elimina el campo 'id'
-      const updatedCategoryBusines = await updateCategoryBusiness(
-        formData.id,
-        updateData
-      );
-      fetchCategoryBusiness();
+      await deleteSkill(id);
+      fetchSkills();
       clearForm();
     } catch (error) {
-      console.error(
-        "Error al actualizar la categoria de negocio",
-        error.response.data
-      );
+      console.error("Error al eliminar la habilidad", error);
     }
   };
 
-  const handleDeleteCategoryBusines = async (id) => {
+  const handleEditSkill = async (skill) => {
     try {
-      await deleteCategoryBusiness(id);
-      fetchCategoryBusiness();
-      clearForm();
-    } catch (error) {
-      console.error("Error al eliminar la categoria de negocio", error);
-    }
-  };
-
-  const handleEditCategoryBusines = async (categoryBusiness) => {
-    try {
-      const selected = await getCategoryBusinessById(categoryBusiness.id);
+      const selected = await getSkillById(skill.id);
       setFormData({ ...selected });
-      setSelectedCategoryBusiness(selected);
+      setSelectedSkill(selected);
       setCreating(false);
       setContainerVisible(true);
     } catch (error) {
-      console.error(
-        "Error al obtener los detalles de la categoria de negocio",
-        error
-      );
-    }
-  };
-
-  const handleShowDetails = async (categoryBusiness) => {
-    try {
-      const selected = await getCategoryBusinessById(categoryBusiness.id);
-      setFormData({ ...selected });
-      setSelectedCategoryBusiness(selected);
-      setContainerVisible(true);
-    } catch (error) {
-      console.error("Error al obtener los detalles del reclutamiento", error);
+      console.error("Error al obtener los detalles de la habilidad", error);
     }
   };
 
   const clearForm = () => {
     setFormData({
-      id: null,
       name: "",
+      category: "",
     });
     setCreating(true);
-    setSelectedCategoryBusiness(null);
+    setSelectedSkill(null);
   };
-
-  const [containerVisible, setContainerVisible] = useState(false);
-
-  const [filter, setFilter] = useState("");
 
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
   };
 
-  const filteredCategoryBusiness = categoryBusiness.filter((categoryBusines) =>
-    categoryBusines.name.toLowerCase().includes(filter.toLowerCase())
+  const filteredSkills = skills.filter((skill) =>
+    skill.name.toLowerCase().includes(filter.toLowerCase())
   );
-
-  const itemsPerPage = 5; // Puedes ajustar esto según tus necesidades
-  const [currentPage, setCurrentPage] = useState(0);
 
   const handlePageChange = (selectedPage) => {
     setCurrentPage(selectedPage.selected);
@@ -125,19 +124,14 @@ const DataTableCategoryBusiness = () => {
 
   const indexOfLastItem = (currentPage + 1) * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredCategoryBusiness.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
+  const currentItems = filteredSkills.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div className="container mx-auto p-4">
       <form>
         <div className={`mt-4 ${containerVisible ? "" : "hidden"}`}>
           <h2 className="text-2xl text-center">
-            {creating
-              ? "Crear Categoría de negocio"
-              : "Actualizar Categoría de negocio"}
+            {creating ? "Crear Habilidad" : "Actualizar Habilidad"}
           </h2>
           <div className="mt-4 p-4 bg-white shadow-md rounded-md grid grid-cols-2 gap-4">
             <div className="mb-4">
@@ -154,11 +148,35 @@ const DataTableCategoryBusiness = () => {
                 className="w-full p-2 border rounded"
               />
             </div>
+            <div className="mb-4">
+              <label
+                htmlFor="category"
+                className="block font-medium text-gray-700"
+              >
+                Categoría de la habilidad
+              </label>
+              <select
+                name="category"
+                value={formData.category}
+                onChange={(e) =>
+                  setFormData({ ...formData, category: e.target.value })
+                }
+                className="w-full p-2 border rounded"
+              >
+                <option value="">Selecciona una categoría</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <div className="mt-4">
               {creating ? (
                 <button
                   type="button"
-                  onClick={handleCreateCategoryBusines}
+                  onClick={handleCreateSkill}
                   className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                 >
                   Crear
@@ -166,7 +184,7 @@ const DataTableCategoryBusiness = () => {
               ) : (
                 <button
                   type="button"
-                  onClick={handleUpdateCategoryBusines}
+                  onClick={handleUpdateSkill}
                   className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                 >
                   Actualizar
@@ -183,17 +201,15 @@ const DataTableCategoryBusiness = () => {
           </div>
         </div>
       </form>
-
-      <h2 className="text-2xl text-center mt-4 mb-4">Categoría de negocios</h2>
+      <h2 className="text-2xl text-center mt-4 mb-4">Habilidades</h2>
       <div className="mt-4 flex justify-between items-center mb-2">
         <button
           type="button"
           onClick={() => setContainerVisible(!containerVisible)}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
-          {containerVisible ? "Ocultar" : "Agregar categoría"}
+          {containerVisible ? "Ocultar" : "Agregar habilidad"}
         </button>
-
         <input
           type="text"
           value={filter}
@@ -212,36 +228,40 @@ const DataTableCategoryBusiness = () => {
               Nombre
             </th>
             <th className="border border-gray-300 py-2 px-4 text-sm font-semibold uppercase">
+              Categoria de la Habilidad
+            </th>
+            <th className="border border-gray-300 py-2 px-4 text-sm font-semibold uppercase">
               Acciones
             </th>
           </tr>
         </thead>
         <tbody>
-          {currentItems.map((categoryBusines, index) => (
-            <tr key={categoryBusines.id}>
+          {currentItems.map((skill, index) => (
+            <tr key={skill.id}>
               <td className="border border-gray-300 py-2 px-4 text-center">
                 {index + 1}
               </td>
               <td className="border border-gray-300 py-2 px-4 text-center">
-                {categoryBusines.name}
+                {skill.name}
+              </td>
+              <td className="border border-gray-300 py-2 px-4 text-center">
+                {skill.category.name}
               </td>
               <td className="border border-gray-300 py-2 px-4 text-center">
                 <button
-                  onClick={() => handleEditCategoryBusines(categoryBusines)}
+                  onClick={() => handleEditSkill(skill)}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded ml-1"
                 >
                   <AiFillEdit />
                 </button>
                 <button
-                  onClick={() =>
-                    handleDeleteCategoryBusines(categoryBusines.id)
-                  }
+                  onClick={() => handleDeleteSkill(skill.id)}
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded ml-1"
                 >
                   <AiFillDelete />
                 </button>
                 <button
-                  onClick={() => handleShowDetails(categoryBusines)}
+                  onClick={() => handleShowDetails(skill)}
                   className="bg-gray-500 hover-bg-gray-700 text-white font-bold py-1 px-2 rounded ml-1"
                 >
                   <AiFillEye />
@@ -255,7 +275,7 @@ const DataTableCategoryBusiness = () => {
         previousLabel={"Anterior"}
         nextLabel={"Siguiente"}
         breakLabel={"..."}
-        pageCount={Math.ceil(filteredCategoryBusiness.length / itemsPerPage)}
+        pageCount={Math.ceil(filteredSkills.length / itemsPerPage)}
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
         onPageChange={handlePageChange}
@@ -271,4 +291,4 @@ const DataTableCategoryBusiness = () => {
   );
 };
 
-export default DataTableCategoryBusiness;
+export default DataTableSkills;
